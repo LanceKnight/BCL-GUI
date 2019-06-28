@@ -36,8 +36,8 @@
 		var $j = jQuery.noConflict();
 		var mol;
 		var Info = {
-			width: 500,
-			height: 500,
+			width: 200,
+			height: 200,
 			debug: false,
 			color: "0xC0C0C0",
 			addSelectionOptions: false,
@@ -116,17 +116,16 @@ DATA-END-->
 
 	<div id="editor-div">
 		<iframe onload="loadIniMol()" id="ketcherFrame" name="ketcherFrame"
-			style="width:50%;height:200px;border-style:none" src="js/ketcher 1.0-beta 5/ketcher.html"
+			style="width:80%;height:500px;border-style:none" src="js/ketcher 1.0-beta 5/ketcher.html"
 			scrolling="no"></iframe>
-		<input type="button" style="margin:10px" value="Render From Editor" onclick="GetDataFromEditor()"></input><br />
+		
 	</div>
 
-
-
-	<div>
-		<div id="renderer"></div>
-		<a href="javascript:jmol.spin(true)">spin ON</a> <a href="javascript:jmol.spin(false)">spin OFF</a>
-	</div id="renderer-div">
+	<div id="renderer-div">
+			<input type="button" style="margin:10px" value="Render From Editor" onclick="GetDataFromEditor()"></input><br/>
+			<div id="renderer"></div>
+			<a href="javascript:jmol.spin(true)">spin ON</a> <a href="javascript:jmol.spin(false)">spin OFF</a>
+	</div>
 
 </body>
 
