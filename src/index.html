@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>BCL</title>
+	<script>
+			//window.nodeRequire = require;
+			//elete window.require;
+	</script>
+	<!-- <script type="text/javascript" src="js/ketcher 1.0-beta 5/prototype-min.js"></script> -->
+	<script type="text/javascript" src="js/ketcher 1.0-beta 5/ketcher.js"></script>
+	<script type="text/javascript" src="js/jsmol/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jsmol/JSmol.lite.nojq.js"></script>
+
+	<script>//script for ketcher as the editor
+
+		var ketcher;
+		function getKetcher() {
+			var frame = null;
+			if ('frames' in window && 'ketcherFrame' in window.frames)
+				frame = window.frames['ketcherFrame'];
+			else
+				return null;
+			if ('window' in frame)
+				return frame.window.ketcher;
+		}
+
+		function loadIniMol() {
+			initialMolecule = document.getElementById('data').outerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
+			var ketcher = getKetcher();
+			ketcher.setMolecule(initialMolecule);
+		}
+	</script>
+
+	<script>//script for JSmol as the renderer
+		var $j = jQuery.noConflict();
+		var mol;
+		var Info = {
+			width: 500,
+			height: 500,
+			debug: false,
+			color: "0xC0C0C0",
+			addSelectionOptions: false,
+			use: "HTML5",
+			readyFunction: null,
+			defaultModel: "",
+			bondWidth: 4,
+			zoomScaling: 1.5,
+			pinchScaling: 2.0,
+			mouseDragFactor: 0.5,
+			touchDragFactor: 0.15,
+			multipleBondSpacing: 4,
+			spinRateX: 0.2,
+			spinRateY: 0.5,
+			spinFPS: 20,
+			spin: true,
+			debug: false
+		};
+
+
+		function render() {
+			Jmol._document = null;
+			Jmol.getTMApplet("jmol", Info);
+			$j("#renderer").html(jmol._code);
+			mol = document.getElementById('data').outerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
+			jmol.__loadModel(mol);
+		}
+
+		function GetDataFromEditor() {
+			var ketcher = getKetcher();
+
+			if (ketcher) {
+
+				document.getElementById('data').innerHTML = "DATA-START\n" + ketcher.getMolfile() + "\nDATA-END";
+
+				render();
+
+			}
+
+		}
+
+		$j(window).ready(function () {
+			render();
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<h1>BCL</h1>
+	<div id="data-div" style="display:none">
+		<div id="data">
+			<!-- data below is commented out to avoid being auto-formatted -->
+			<!--DATA-START
+681
+  Ketcher 06171914422D 1   1.00000     0.00000     0
+
+  6  6  0     0  0            999 V2000
+   -1.1750    1.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.3090    1.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.3090    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -1.1750   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -2.0410    0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -2.0410    1.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  1  0     0  0
+  2  3  2  0     0  0
+  3  4  1  0     0  0
+  4  5  2  0     0  0
+  5  6  1  0     0  0
+  6  1  2  0     0  0
+M  END
+DATA-END-->
+		</div>
+	</div>
+
+	<div id="editor-div">
+		<iframe onload="loadIniMol()" id="ketcherFrame" name="ketcherFrame"
+			style="width:50%;height:200px;border-style:none" src="js/ketcher 1.0-beta 5/ketcher.html"
+			scrolling="no"></iframe>
+		<input type="button" style="margin:10px" value="Render From Editor" onclick="GetDataFromEditor()"></input><br />
+	</div>
+
+
+
+	<div>
+		<div id="renderer"></div>
+		<a href="javascript:jmol.spin(true)">spin ON</a> <a href="javascript:jmol.spin(false)">spin OFF</a>
+	</div id="renderer-div">
+
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "bcl-interface",
+  "version": "1.0.0",
+  "description": "This is a bcl-interface",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^5.0.4"
+  },
+  "keywords": [
+    "bcl",
+    "electron",
+    "cpp"
+  ],
+  "author": "Yunchao Liu",
+  "license": "ISC"
+}
