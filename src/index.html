@@ -3,15 +3,37 @@
 
 <head>
 	<title>BCL</title>
-	<script>
-			//window.nodeRequire = require;
-			//elete window.require;
+	<script>//this must be applied before using any js because node js keyword "require" conflict with jquery keywords
+		window.nodeRequire = require;
+		delete window.require;
+		delete window.exports;
+		delete window.module;
 	</script>
-	<!-- <script type="text/javascript" src="js/ketcher 1.0-beta 5/prototype-min.js"></script> -->
+	<script type="text/javascript" src="js/ketcher 1.0-beta 5/prototype-min.js"></script>
 	<script type="text/javascript" src="js/ketcher 1.0-beta 5/ketcher.js"></script>
 	<script type="text/javascript" src="js/jsmol/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jsmol/JSmol.lite.nojq.js"></script>
+	<script>//script for interacting with C++
+	    const {ipcRenderer}= window.nodeRequire('electron');
 
+		function signalToCPP(input)
+		{
+			//alert("input:"+ input)
+			ipcRenderer.send('signalToMain', input)
+		
+			<!-- Jmol._document = null; -->
+			<!-- Jmol.getTMApplet("jmol", Info); -->
+			<!-- $j("#apphere").html(jmol._code); -->
+			<!-- mol = $j('html').html().split("CPP\n")[1] -->
+			<!-- jmol.__loadModel(mol); -->
+		}
+					
+		ipcRenderer.on('signalToRenderer', (event, arg) => {
+			console.log('renderer received:'+arg);
+			document.getElementById('text_output').innerHTML= arg;
+		})
+	
+	</script>
 	<script>//script for ketcher as the editor
 
 		var ketcher;
@@ -26,7 +48,7 @@
 		}
 
 		function loadIniMol() {
-			initialMolecule = document.getElementById('data').outerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
+			initialMolecule = document.getElementById('data').innerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
 			var ketcher = getKetcher();
 			ketcher.setMolecule(initialMolecule);
 		}
@@ -62,7 +84,7 @@
 			Jmol._document = null;
 			Jmol.getTMApplet("jmol", Info);
 			$j("#renderer").html(jmol._code);
-			mol = document.getElementById('data').outerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
+			mol = document.getElementById('data').innerHTML.split("DATA-START\n")[1].split("DATA-END")[0];
 			jmol.__loadModel(mol);
 		}
 
@@ -123,7 +145,10 @@ DATA-END-->
 
 	<div id="renderer-div">
 			<input type="button" style="margin:10px" value="Render From Editor" onclick="GetDataFromEditor()"></input><br/>
-			<div id="renderer"></div>
+			<input type="button" style="margin:10px" value="Get Aspirin Struct From C++" onclick="signalToCPP(1)"></input><br/>
+			<input type="button" style="margin:10px" value="Get Ibuprofen Struct From C++" onclick="signalToCPP(2)"></input><br/>
+			<input type="button" style="margin:10px" value="Get VitaminD2 Struct From C++" onclick="signalToCPP(3)"></input><br/>
+			<div id="renderer"></div><textarea id=text_output stype="display:none"></textarea>
 			<a href="javascript:jmol.spin(true)">spin ON</a> <a href="javascript:jmol.spin(false)">spin OFF</a>
 	</div>
 
