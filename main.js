@@ -1,5 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
-const cpp_connector = require('./src/cppsrc/CPPconnector/build/Release/CPPconnector.node');
+const cpp_connector = require('./src/cppsrc/CPPconnector/build/Release/integrated_cpp_connector.node');
 
 
 let mainWindow;
@@ -20,9 +20,9 @@ function createWindow () {
 	mainWindow.loadURL(`file://${__dirname}/src/index.html`);
 };
 
-function getFromCpp(){
+function getFromCpp(input){
 	module.exports = cpp_connector;
-	cpp_output = cpp_connector.hello();
+	cpp_output = cpp_connector.hello(input-1);
 	return cpp_output;
 }
 
@@ -40,7 +40,7 @@ app.on('window-all-closed', () => {
 ipcMain.on('signalToMain', (event, arg)=> {
 	console.log('main process receiced signal from renderer process, msg:'+arg);
 	
-	var output = getFromCpp();
+	var output = getFromCpp(arg);
 	console.log('main process received output from c++, msg:' +output);
 
 	event.reply('signalToRenderer', output)

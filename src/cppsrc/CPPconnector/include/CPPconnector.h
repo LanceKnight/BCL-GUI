@@ -1,6 +1,7 @@
 #ifndef CPP_CONNECTOR_H
 #define CPP_CONNECTOR_H
-#include <cstring>
+#include <string>
+
 
 std::string get_output(int input);
 
