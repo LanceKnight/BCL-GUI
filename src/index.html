@@ -20,7 +20,7 @@
 		{
 			//alert("input:"+ input)
 			ipcRenderer.send('signalToMain', input)
-		
+				
 			<!-- Jmol._document = null; -->
 			<!-- Jmol.getTMApplet("jmol", Info); -->
 			<!-- $j("#apphere").html(jmol._code); -->
@@ -31,6 +31,8 @@
 		ipcRenderer.on('signalToRenderer', (event, arg) => {
 			console.log('renderer received:'+arg);
 			document.getElementById('text_output').innerHTML= arg;
+			document.getElementById('data').innerHTML="<!--DATA-START\n\n"+arg+"\nDATA-END-->";
+			render();
 		})
 	
 	</script>

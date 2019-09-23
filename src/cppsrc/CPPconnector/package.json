@@ -1,5 +1,5 @@
 {
-  "name": "cpp_connector",
+  "name": "integreated_cpp_connector",
   "version": "1.0.0",
   "description": "a connector to C++ codes",
   "main": "index.js",

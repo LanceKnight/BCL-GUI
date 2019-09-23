@@ -4,7 +4,7 @@
   "description": "This is a bcl-interface",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . --no-sandbox"
   },
   "devDependencies": {
     "electron": "^5.0.4"
